@@ -1,6 +1,6 @@
 {
   "name": "@yuanqing/google-sheets",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An easier interface to read from and write to Google Sheets",
   "author": "Lim Yuan Qing",
   "license": "MIT",
