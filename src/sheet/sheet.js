@@ -1,5 +1,12 @@
 class Sheet {
-  constructor (request, spreadsheetId, sheetId, sheetName, headers, columnRange) {
+  constructor (
+    request,
+    spreadsheetId,
+    sheetId,
+    sheetName,
+    headers,
+    columnRange
+  ) {
     this.request = request
     this.spreadsheetId = spreadsheetId
     this.sheetId = sheetId
@@ -11,7 +18,9 @@ class Sheet {
   async getAllRows () {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
-      `ranges=${this.sheetName}!${this.columnRange.start}:${this.columnRange.end}`,
+      `ranges=${this.sheetName}!${this.columnRange.start}:${
+        this.columnRange.end
+      }`,
       'majorDimension=ROWS',
       'valueRenderOption=UNFORMATTED_VALUE'
     ]
@@ -25,7 +34,7 @@ class Sheet {
   async getRowsByRange (startIndex, endIndex) {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
-      `ranges=${this.sheetName}!${startIndex + 1}:${endIndex + 1}`,
+      `ranges=${this.sheetName}!${startIndex}:${endIndex}`,
       'majorDimension=ROWS',
       'valueRenderOption=UNFORMATTED_VALUE'
     ]

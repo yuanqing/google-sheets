@@ -8,7 +8,14 @@ async function getSheet (request, spreadsheetId, sheetName) {
     spreadsheetId,
     sheetName
   )
-  return new Sheet(request, spreadsheetId, `${sheetId}`, sheetName, headers, columnRange)
+  return new Sheet(
+    request,
+    spreadsheetId,
+    `${sheetId}`,
+    sheetName,
+    headers,
+    columnRange
+  )
 }
 
 async function getId (request, spreadsheetId, sheetName) {
@@ -30,7 +37,10 @@ async function getId (request, spreadsheetId, sheetName) {
 
 async function getHeadersAndColumnRange (request, spreadsheetId, sheetName) {
   // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
-  const result = await request('GET', `${spreadsheetId}/values/${sheetName}!1:1`)
+  const result = await request(
+    'GET',
+    `${spreadsheetId}/values/${sheetName}!1:1`
+  )
   return {
     headers: result.values[0],
     columnRange: extractColumnRange(result.range)

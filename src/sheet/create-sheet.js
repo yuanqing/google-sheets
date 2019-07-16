@@ -3,8 +3,20 @@ const Sheet = require('./sheet')
 
 async function createSheet (request, spreadsheetId, sheetName, headers) {
   const sheetId = await addSheet(request, spreadsheetId, sheetName)
-  const columnRange = await setHeaders(request, spreadsheetId, sheetName, headers)
-  return new Sheet(request, spreadsheetId, `${sheetId}`, sheetName, headers, columnRange)
+  const columnRange = await setHeaders(
+    request,
+    spreadsheetId,
+    sheetName,
+    headers
+  )
+  return new Sheet(
+    request,
+    spreadsheetId,
+    `${sheetId}`,
+    sheetName,
+    headers,
+    columnRange
+  )
 }
 
 async function addSheet (request, spreadsheetId, sheetName) {
