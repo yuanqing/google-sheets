@@ -1,34 +1,10 @@
 class Sheet {
-  async createSheet (sheetName, headers, request) {
-    this.sheetName = sheetName
-    this.headers = headers
+  constructor (request, id, name, headers, columnRange) {
     this.request = request
-    // https://developers.google.com/sheets/api/samples/sheet#add_a_sheet
-    const addSheetResult = await this.request('POST', ':batchUpdate', {
-      requests: [
-        {
-          addSheet: {
-            properties: {
-              title: this.sheetName
-            }
-          }
-        }
-      ]
-    })
-    this.sheetId = addSheetResult.replies[0].addSheet.properties.sheetId
-    // https://developers.google.com/sheets/api/samples/writing#write_a_single_range
-    const range = `${this.sheetName}!1:1`
-    const addHeadersResult = await this.request(
-      'PUT',
-      `/values/${range}?valueInputOption=USER_ENTERED`,
-      {
-        range,
-        majorDimension: 'ROWS',
-        values: [headers]
-      }
-    )
-    this.columnRange = addHeadersResult.updatedRange.match(/!(\S+)/)[1]
-    return this
+    this.id = id
+    this.name = name
+    this.headers = headers
+    this.columnRange = columnRange
   }
 
   async deleteSheet () {
@@ -37,7 +13,7 @@ class Sheet {
       requests: [
         {
           deleteSheet: {
-            sheetId: this.sheetId
+            sheetId: this.id
           }
         }
       ]
@@ -48,13 +24,13 @@ class Sheet {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const json = await this.request(
       'GET',
-      `/values/${this.sheetName}!${startIndex + 1}:${endIndex + 1}`
+      `/values/${this.name}!${startIndex + 1}:${endIndex + 1}`
     )
     return this.mapArrayToObject(json.values)
   }
 
   async addRows (rows) {
-    const range = `${this.sheetName}!${this.columnRange}`
+    const range = `${this.name}!${this.columnRange}`
     // https://developers.google.com/sheets/api/samples/writing#append_values
     await this.request(
       'POST',
