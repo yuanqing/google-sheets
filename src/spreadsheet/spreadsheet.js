@@ -1,19 +1,19 @@
 const getSheet = require('../sheet/get-sheet')
 const createSheet = require('../sheet/create-sheet')
 
-class Sheets {
+class Spreadsheet {
   constructor (request, id) {
     this.request = request
     this.id = id
   }
 
   async createSheet (name, headers) {
-    return createSheet(this.request, name, headers)
+    return createSheet(this.request, this.id, name, headers)
   }
 
   async getSheet (name) {
-    return getSheet(this.request, name)
+    return getSheet(this.request, this.id, name)
   }
 }
 
-module.exports = Sheets
+module.exports = Spreadsheet

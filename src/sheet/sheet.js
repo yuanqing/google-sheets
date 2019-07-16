@@ -1,6 +1,7 @@
 class Sheet {
-  constructor (request, id, name, headers, columnRange) {
+  constructor (request, spreadsheetId, id, name, headers, columnRange) {
     this.request = request
+    this.spreadsheetId = spreadsheetId
     this.id = id
     this.name = name
     this.headers = headers
@@ -9,7 +10,7 @@ class Sheet {
 
   async deleteSheet () {
     // https://developers.google.com/sheets/api/samples/sheet#delete_a_sheet
-    return this.request('POST', ':batchUpdate', {
+    return this.request('POST', `${this.spreadsheetId}:batchUpdate`, {
       requests: [
         {
           deleteSheet: {
@@ -24,7 +25,8 @@ class Sheet {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const json = await this.request(
       'GET',
-      `/values/${this.name}!${startIndex + 1}:${endIndex + 1}`
+      `${this.spreadsheetId}/values/${this.name}!${startIndex + 1}:${endIndex +
+        1}`
     )
     return this.mapArrayToObject(json.values)
   }
@@ -34,7 +36,9 @@ class Sheet {
     // https://developers.google.com/sheets/api/samples/writing#append_values
     await this.request(
       'POST',
-      `/values/${range}:append?valueInputOption=USER_ENTERED`,
+      `${
+        this.spreadsheetId
+      }/values/${range}:append?valueInputOption=USER_ENTERED`,
       {
         range,
         majorDimension: 'ROWS',
