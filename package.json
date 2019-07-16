@@ -1,7 +1,7 @@
 {
   "name": "@yuanqing/google-sheets",
   "version": "0.0.0",
-  "description": "A user-friendly wrapper around the Google Sheets JavaScript API",
+  "description": "An easier interface to read from and write to Google Sheets",
   "author": "Lim Yuan Qing",
   "license": "MIT",
   "repository": {
