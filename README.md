@@ -4,6 +4,10 @@
 
 ## Quick start
 
+```sh
+$ yarn add @yuanqing/google-sheets
+```
+
 ```js
 const { getSpreadsheet } = require('@yuanqing/google-sheets')
 
@@ -22,11 +26,13 @@ async function main () {
   const rows = await sheet.getAllRows()
   console.log(rows)
 }
+
+await main()
 ```
 
-- **`<client_email>`** and **`<private_key>`** are values from the Service Account credentials JSON file. See [Initial setup](#initial-setup).
+- **`<client_email>`** and **`<private_key>`** are credentials for a Service Account with edit access to your spreadsheet. See [Initial setup](#initial-setup).
 - **`<spreadsheet_id>`** is the value between `/d/` and `/edit` in your spreadsheet URL.
-- **`<sheet_name>`** is the name of the sheet we want to operate on.
+- **`<sheet_name>`** is the name of the sheet that you want to read from or write to.
 
 ### Initial setup
 
@@ -46,7 +52,7 @@ async function main () {
 </details>
 
 <details>
-<summary>2. Give the Service Account edit access to your spreadsheet.</summary>
+<summary>2. Grant the Service Account edit access to your spreadsheet.</summary>
 <p>
 
 1. Navigate to your spreadsheet.
@@ -80,7 +86,7 @@ Creates a new spreadsheet and returns a Promise for it.
 - `serviceAccountCredentials` is an object literal with the following keys:
 
     Key | Description
-    :-|:-|:-
+    :-|:-
     `clientEmail` | Email address of the Service Account that has edit access to the spreadsheet.
     `privateKey` | Private key of the Service Account.
 
