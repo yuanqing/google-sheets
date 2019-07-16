@@ -1,38 +1,45 @@
 class Sheet {
-  constructor (request, spreadsheetId, id, name, headers, columnRange) {
+  constructor (request, spreadsheetId, sheetId, sheetName, headers, columnRange) {
     this.request = request
     this.spreadsheetId = spreadsheetId
-    this.id = id
-    this.name = name
+    this.sheetId = sheetId
+    this.sheetName = sheetName
     this.headers = headers
     this.columnRange = columnRange
   }
 
-  async deleteSheet () {
-    // https://developers.google.com/sheets/api/samples/sheet#delete_a_sheet
-    return this.request('POST', `${this.spreadsheetId}:batchUpdate`, {
-      requests: [
-        {
-          deleteSheet: {
-            sheetId: this.id
-          }
-        }
-      ]
-    })
-  }
-
-  async getRows (startIndex, endIndex) {
+  async getAllRows () {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
+    const queryParameters = [
+      `ranges=${this.sheetName}!${this.columnRange.start}:${this.columnRange.end}`,
+      'majorDimension=ROWS',
+      'valueRenderOption=UNFORMATTED_VALUE'
+    ]
     const json = await this.request(
       'GET',
-      `${this.spreadsheetId}/values/${this.name}!${startIndex + 1}:${endIndex +
-        1}`
+      `${this.spreadsheetId}/values:batchGet?${queryParameters.join('&')}`
     )
-    return this.mapArrayToObject(json.values)
+    return this.mapArrayToObject(json.valueRanges[0].values).slice(1)
+  }
+
+  async getRowsByRange (startIndex, endIndex) {
+    // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
+    const queryParameters = [
+      `ranges=${this.sheetName}!${startIndex + 1}:${endIndex + 1}`,
+      'majorDimension=ROWS',
+      'valueRenderOption=UNFORMATTED_VALUE'
+    ]
+    const json = await this.request(
+      'GET',
+      `${this.spreadsheetId}/values:batchGet?${queryParameters.join('&')}`
+    )
+    return this.mapArrayToObject(json.valueRanges[0].values)
   }
 
   async addRows (rows) {
-    const range = `${this.name}!${this.columnRange}`
+    const range = `${this.sheetName}!${this.columnRange.start}:${
+      this.columnRange.end
+    }`
     // https://developers.google.com/sheets/api/samples/writing#append_values
     await this.request(
       'POST',
@@ -46,6 +53,19 @@ class Sheet {
       }
     )
     return Promise.resolve(rows)
+  }
+
+  async deleteSheet () {
+    // https://developers.google.com/sheets/api/samples/sheet#delete_a_sheet
+    return this.request('POST', `${this.spreadsheetId}:batchUpdate`, {
+      requests: [
+        {
+          deleteSheet: {
+            sheetId: this.sheetId
+          }
+        }
+      ]
+    })
   }
 
   mapArrayToObject (arrays) {
