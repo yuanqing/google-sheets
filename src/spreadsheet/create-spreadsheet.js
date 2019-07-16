@@ -1,4 +1,4 @@
-const createApiClient = require('../create-api-client')
+const createApiClient = require('./create-api-client')
 const Spreadsheet = require('./spreadsheet')
 
 async function createSpreadsheet (serviceAccountCredentials) {
