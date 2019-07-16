@@ -13,12 +13,12 @@ async function main () {
     priateKey: '<private_key>'
   }
   const spreadsheetId = '<spreadsheet_id>'
-  const spreadsheetName = '<sheet_name>'
+  const sheetName = '<sheet_name>'
   const spreadsheet = await getSpreadsheet(
     serviceAccountCredentials,
     spreadsheetId
   )
-  const sheet = await spreadsheet.getSheet(spreadsheetName)
+  const sheet = await spreadsheet.getSheet(sheetName)
   const rows = await sheet.getAllRows()
   console.log(rows)
 }
