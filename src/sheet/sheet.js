@@ -15,14 +15,14 @@ class Sheet {
     this.columnRange = columnRange
   }
 
-  async getAllRows () {
+  async getAllRows (formattedValues = false) {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
       `ranges=${this.sheetName}!${this.columnRange.start}:${
         this.columnRange.end
       }`,
       'majorDimension=ROWS',
-      'valueRenderOption=UNFORMATTED_VALUE'
+      formattedValues ? 'valueRenderOption=FORMATTED_VALUE' : 'valueRenderOption=UNFORMATTED_VALUE'
     ]
     const json = await this.request(
       'GET',
@@ -31,12 +31,12 @@ class Sheet {
     return this.mapArrayToObject(json.valueRanges[0].values).slice(1)
   }
 
-  async getRowsByRange (startIndex, endIndex) {
+  async getRowsByRange (startIndex, endIndex, formattedValues = false) {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
       `ranges=${this.sheetName}!${startIndex}:${endIndex}`,
       'majorDimension=ROWS',
-      'valueRenderOption=UNFORMATTED_VALUE'
+      formattedValues ? 'valueRenderOption=FORMATTED_VALUE' : 'valueRenderOption=UNFORMATTED_VALUE'
     ]
     const json = await this.request(
       'GET',
