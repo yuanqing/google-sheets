@@ -15,14 +15,14 @@ class Sheet {
     this.columnRange = columnRange
   }
 
-  async getAllRows (formattedValues = false) {
+  async getAllRows (options = new Options()) {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
       `ranges=${this.sheetName}!${this.columnRange.start}:${
         this.columnRange.end
       }`,
       'majorDimension=ROWS',
-      formattedValues ? 'valueRenderOption=FORMATTED_VALUE' : 'valueRenderOption=UNFORMATTED_VALUE'
+      options.formattedValues ? 'valueRenderOption=FORMATTED_VALUE' : 'valueRenderOption=UNFORMATTED_VALUE'
     ]
     const json = await this.request(
       'GET',
@@ -31,12 +31,12 @@ class Sheet {
     return this.mapArrayToObject(json.valueRanges[0].values).slice(1)
   }
 
-  async getRowsByRange (startIndex, endIndex, formattedValues = false) {
+  async getRowsByRange (startIndex, endIndex, options = new Options()) {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
       `ranges=${this.sheetName}!${startIndex}:${endIndex}`,
       'majorDimension=ROWS',
-      formattedValues ? 'valueRenderOption=FORMATTED_VALUE' : 'valueRenderOption=UNFORMATTED_VALUE'
+      options.formattedValues ? 'valueRenderOption=FORMATTED_VALUE' : 'valueRenderOption=UNFORMATTED_VALUE'
     ]
     const json = await this.request(
       'GET',
@@ -101,4 +101,13 @@ class Sheet {
   }
 }
 
+class Options {
+  constructor (
+      formattedValues = false
+  ) {
+    this.formattedValues = formattedValues
+  }
+}
+
 module.exports = Sheet
+module.exports = Options
