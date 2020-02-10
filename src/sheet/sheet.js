@@ -103,11 +103,13 @@ class Sheet {
 
 class Options {
   constructor (
-      formattedValues = false
+    formattedValues = false
   ) {
     this.formattedValues = formattedValues
   }
 }
 
-module.exports = Sheet
-module.exports = Options
+module.exports = {
+  Sheet: Sheet,
+  Options: Options
+}
