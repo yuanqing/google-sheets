@@ -1,3 +1,5 @@
+const Options = require('./options')
+
 class Sheet {
   constructor (
     request,
@@ -101,15 +103,4 @@ class Sheet {
   }
 }
 
-class Options {
-  constructor (
-    formattedValues = false
-  ) {
-    this.formattedValues = formattedValues
-  }
-}
-
-module.exports = {
-  Sheet: Sheet,
-  Options: Options
-}
+module.exports = Sheet
