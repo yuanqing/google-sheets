@@ -117,9 +117,15 @@ Returns a Promise for an array containing all the `rows` from the `sheet`.
 
 Returns a Promise for an array containing `rows` from the row `m` to row `n` of the `sheet`.
 
+Data rows are zero-indexed. For example, pass in `(0, 1)` to delete rows 2 and 3 in the `sheet`.
+
 #### await sheet.addRows(rows)
 
 Appends the given array of `rows` to the `sheet`, and returns a Promise that resolves.
+
+#### const deletedRows = await sheet.deleteRows(predicate)
+
+Deletes rows in the `sheet` that satisfy the given `predicate`, and returns a Promise for an array containing the deleted rows.
 
 ## Installation
 

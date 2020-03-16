@@ -32,7 +32,7 @@ class Sheet {
   async getRowsByRange (startIndex, endIndex) {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
-      `ranges=${this.sheetName}!${startIndex}:${endIndex}`,
+      `ranges=${this.sheetName}!${startIndex + 2}:${endIndex + 2}`,
       'majorDimension=ROWS',
       'valueRenderOption=UNFORMATTED_VALUE'
     ]
@@ -56,6 +56,41 @@ class Sheet {
       }
     )
     return Promise.resolve(rows)
+  }
+
+  async deleteRows (predicate) {
+    // https://developers.google.com/sheets/api/samples/rowcolumn#delete_rows_or_columns
+    const rows = await this.getAllRows()
+    const indices = []
+    const deletedRows = []
+    rows.forEach(function (value, index) {
+      if (predicate(value) === true) {
+        indices.push(index)
+        deletedRows.push(value)
+      }
+    })
+    if (indices.length === 0) {
+      return []
+    }
+    const sheetId = this.sheetId
+    let deletedCount = -1
+    const requests = indices.map(function (index) {
+      deletedCount++
+      return {
+        deleteDimension: {
+          range: {
+            sheetId,
+            dimension: 'ROWS',
+            startIndex: index + 1 - deletedCount,
+            endIndex: index + 2 - deletedCount
+          }
+        }
+      }
+    })
+    await this.request('POST', `${this.spreadsheetId}:batchUpdate`, {
+      requests
+    })
+    return deletedRows
   }
 
   async deleteSheet () {
