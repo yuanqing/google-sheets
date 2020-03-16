@@ -1,7 +1,7 @@
 const fetch = require('isomorphic-unfetch')
 const createAccessToken = require('./create-access-token')
 
-const BASE_URL = `https://sheets.googleapis.com/v4/spreadsheets`
+const BASE_URL = 'https://sheets.googleapis.com/v4/spreadsheets'
 
 async function createApiClient (serviceAccountCredentials) {
   const accessToken = await createAccessToken(serviceAccountCredentials)

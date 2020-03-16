@@ -18,9 +18,7 @@ class Sheet {
   async getAllRows () {
     // https://developers.google.com/sheets/api/samples/reading#read_a_single_range
     const queryParameters = [
-      `ranges=${this.sheetName}!${this.columnRange.start}:${
-        this.columnRange.end
-      }`,
+      `ranges=${this.sheetName}!${this.columnRange.start}:${this.columnRange.end}`,
       'majorDimension=ROWS',
       'valueRenderOption=UNFORMATTED_VALUE'
     ]
@@ -46,15 +44,11 @@ class Sheet {
   }
 
   async addRows (rows) {
-    const range = `${this.sheetName}!${this.columnRange.start}:${
-      this.columnRange.end
-    }`
+    const range = `${this.sheetName}!${this.columnRange.start}:${this.columnRange.end}`
     // https://developers.google.com/sheets/api/samples/writing#append_values
     await this.request(
       'POST',
-      `${
-        this.spreadsheetId
-      }/values/${range}:append?valueInputOption=USER_ENTERED`,
+      `${this.spreadsheetId}/values/${range}:append?valueInputOption=USER_ENTERED`,
       {
         range,
         majorDimension: 'ROWS',

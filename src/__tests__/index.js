@@ -58,7 +58,10 @@ test('get rows by range', async function (t) {
   )
   const sheet = await spreadsheet.getSheet('Sheet1')
   const actual = await sheet.getRowsByRange(3, 4)
-  const expected = [{ id: 2, name: 'bar' }, { id: 3, name: 'baz' }]
+  const expected = [
+    { id: 2, name: 'bar' },
+    { id: 3, name: 'baz' }
+  ]
   t.deepEqual(actual, expected)
 })
 
